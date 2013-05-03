@@ -10,6 +10,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- CUSTOMIZED -->
+        <finalName>${project.artifactId}-${project.version}</finalName>
     </properties>
 
     <build>
@@ -84,7 +86,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>${project.artifactId}-${project.version}</finalName>
+                    <finalName>${finalName}</finalName>
                 </configuration>
             </plugin>
         </plugins>
