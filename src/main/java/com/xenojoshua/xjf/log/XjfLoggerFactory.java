@@ -2,11 +2,13 @@ package com.xenojoshua.xjf.log;
 
 import com.xenojoshua.xjf.constant.XjfConst;
 import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 public class XjfLoggerFactory {
     private static Logger logger = null;
 
-    public static void init(String configPath) {
+    public static void init() {
+        PropertyConfigurator.configureAndWatch(XjfConst.XJF_LOGS_ROOT + "log4j.properties");
         XjfLoggerFactory.logger = Logger.getLogger(XjfConst.XJF_LOGGER_NAME);
     }
 
