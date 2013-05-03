@@ -15,7 +15,7 @@ public class XjfLoggerFactory {
      * Initialize log4j logger.
      */
     public static void init() {
-        String log4jConfPath = XjfConst.XJF_LOGS_ROOT + "log4j.properties";
+        String log4jConfPath = XjfConst.XJF_CONF_ROOT + "/log4j.properties";
         File log4jConf = new File(log4jConfPath);
         if (!log4jConf.exists() || !log4jConf.isFile()) {
             System.out.println("[Xjf System] Log4j config path invalid: " + log4jConfPath);

@@ -30,15 +30,16 @@ public class XjfSystem {
             System.out.println("[Xjf System] Root path is invalid: " + jarRoot);
             System.exit(1);
         } else {
-            if (jarRoot.lastIndexOf('/') != jarRoot.length()) {
-                jarRoot += '/';
+            if (jarRoot.lastIndexOf('/') == (jarRoot.length() - 1)) {
+                jarRoot = jarRoot.substring(0, (jarRoot.length() - 1)); // remove tailing '/'
             }
             XjfConst.XJF_ROOT = jarRoot;
+            System.setProperty("WORKDIR", jarRoot); // used by log4j
             System.out.println("[Xjf System] Root path set: " + jarRoot);
         }
 
         // validate logs directory
-        String logsRoot = jarRoot + "logs/";
+        String logsRoot = jarRoot + "/logs";
         File logs = new File(logsRoot);
         if (!logs.exists() || !logs.isDirectory() || !logs.canWrite()) {
             System.out.println("[Xjf System] Logs path is invalid: " + logsRoot);
@@ -49,7 +50,7 @@ public class XjfSystem {
         }
 
         // validate config directory
-        String confRoot = jarRoot + "configs/";
+        String confRoot = jarRoot + "/configs";
         File confs = new File(confRoot);
         if (!confs.exists() || !confs.isDirectory() || !confs.canWrite()) {
             System.out.println("[Xjf System] Configs path is invalid: " + confRoot);
