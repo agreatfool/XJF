@@ -1,6 +1,7 @@
 package com.xenojoshua.xjf.system;
 
 import com.xenojoshua.xjf.constant.XjfConst;
+import com.xenojoshua.xjf.log.XjfLoggerFactory;
 
 import java.io.File;
 
@@ -10,9 +11,12 @@ public class XjfSystem {
      * @param jarRoot
      */
     public static void init(String jarRoot) {
-        System.out.println("[Xjf System] initialize...");
+        System.out.println("[Xjf System] initializing...");
 
         XjfSystem.initDirectories(jarRoot);
+        XjfSystem.initLogger();
+
+        System.out.println("[Xjf System] initialized...");
     }
 
     /**
@@ -57,5 +61,12 @@ public class XjfSystem {
 
         // release
         root = logs = confs = null;
+    }
+
+    /**
+     * Initialize XjfLoggerFactory.
+     */
+    private static void initLogger() {
+        XjfLoggerFactory.init();
     }
 }

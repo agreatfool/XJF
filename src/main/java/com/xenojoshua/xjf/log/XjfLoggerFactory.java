@@ -4,12 +4,27 @@ import com.xenojoshua.xjf.constant.XjfConst;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import java.io.File;
+
 public class XjfLoggerFactory {
     private static Logger logger = null;
 
+    private static int CONF_RELOAD_INTERVAL = 100000; // 10s
+
+    /**
+     * Initialize log4j logger.
+     */
     public static void init() {
-        PropertyConfigurator.configureAndWatch(XjfConst.XJF_LOGS_ROOT + "log4j.properties");
-        XjfLoggerFactory.logger = Logger.getLogger(XjfConst.XJF_LOGGER_NAME);
+        String log4jConfPath = XjfConst.XJF_LOGS_ROOT + "log4j.properties";
+        File log4jConf = new File(log4jConfPath);
+        if (!log4jConf.exists() || !log4jConf.isFile()) {
+            System.out.println("[Xjf System] Log4j config path invalid: " + log4jConfPath);
+            System.exit(1);
+        } else {
+            PropertyConfigurator.configureAndWatch(log4jConfPath, XjfLoggerFactory.CONF_RELOAD_INTERVAL);
+            XjfLoggerFactory.logger = Logger.getLogger(XjfConst.XJF_LOGGER_NAME);
+            System.out.println("[Xjf System] Log4j initialized with config: " + log4jConfPath);
+        }
     }
 
     /**
@@ -17,9 +32,6 @@ public class XjfLoggerFactory {
      * @return Logger logger
      */
     public static Logger get() throws Exception {
-        if (XjfLoggerFactory.logger == null) {
-            throw new Exception("[Xjf System] XjfLoggerFactory not initialized");
-        }
         return XjfLoggerFactory.logger;
     }
 }
