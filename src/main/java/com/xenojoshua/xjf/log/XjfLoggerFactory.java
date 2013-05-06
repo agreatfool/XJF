@@ -24,6 +24,7 @@ public class XjfLoggerFactory {
             PropertyConfigurator.configureAndWatch(log4jConfPath, XjfLoggerFactory.CONF_RELOAD_INTERVAL);
             XjfLoggerFactory.logger = Logger.getLogger(XjfConst.XJF_LOGGER_NAME);
             System.out.println("[Xjf System] Log4j initialized with config: " + log4jConfPath);
+            log4jConf = null;
         }
     }
 

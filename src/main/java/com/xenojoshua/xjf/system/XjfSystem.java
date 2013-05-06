@@ -34,7 +34,9 @@ public class XjfSystem {
                 jarRoot = jarRoot.substring(0, (jarRoot.length() - 1)); // remove tailing '/'
             }
             XjfConst.XJF_ROOT = jarRoot;
-            System.setProperty("WORKDIR", jarRoot); // used by log4j
+            // used by log4j
+            // log4j.appender.DLD.File = ${WORKDIR}/logs/debug.log
+            System.setProperty("WORKDIR", jarRoot);
             System.out.println("[Xjf System] Root path set: " + jarRoot);
         }
 
@@ -60,7 +62,7 @@ public class XjfSystem {
             System.out.println("[Xjf System] Configs path set: " + confRoot);
         }
 
-        // release
+        // release resources
         root = logs = confs = null;
     }
 
