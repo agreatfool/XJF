@@ -32,7 +32,7 @@ public class XjfLoggerFactory {
      * Get instance of org.apache.log4j.Logger
      * @return Logger logger
      */
-    public static Logger get() throws Exception {
+    public static Logger get() {
         return XjfLoggerFactory.logger;
     }
 }
