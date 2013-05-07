@@ -33,14 +33,6 @@ public class XjfConfig {
     }
 
     /**
-     * Get instance of XjfConfig.
-     * @return instance
-     */
-    public static XjfConfig get() {
-        return XjfConfig.instance;
-    }
-
-    /**
      * Initialize XjfConfig HashMaps.
      */
     public XjfConfig() {
@@ -56,8 +48,8 @@ public class XjfConfig {
      * @param fileName
      * @return handler
      */
-    public XjfConfigHandlerInterface getHandler(String fileName) {
-        return getHandler(fileName, XjfConst.XJF_CONFIG_TYPE_JSON);
+    public static XjfConfigHandlerInterface getHandler(String fileName) {
+        return XjfConfig.getHandler(fileName, XjfConst.XJF_CONFIG_TYPE_JSON);
     }
 
     /**
@@ -66,19 +58,19 @@ public class XjfConfig {
      * @param type
      * @return handler
      */
-    public XjfConfigHandlerInterface getHandler(String fileName, String type) {
+    public static XjfConfigHandlerInterface getHandler(String fileName, String type) {
         XjfConfigHandlerInterface handler = null;
 
         if (type.equals(XjfConst.XJF_CONFIG_TYPE_JSON)) {
-            if (!jsonHandlers.containsKey(fileName)) {
-                loadConfigFile(fileName, type);
+            if (!XjfConfig.instance.jsonHandlers.containsKey(fileName)) {
+                XjfConfig.instance.loadConfigFile(fileName, type);
             }
-            handler = jsonHandlers.get(fileName);
+            handler = XjfConfig.instance.jsonHandlers.get(fileName);
         } else if (type.equals(XjfConst.XJF_CONFIG_TYPE_PROPERTIES)) {
-            if (!propertyHandlers.containsKey(fileName)) {
-                loadConfigFile(fileName, type);
+            if (!XjfConfig.instance.propertyHandlers.containsKey(fileName)) {
+                XjfConfig.instance.loadConfigFile(fileName, type);
             }
-            handler = propertyHandlers.get(fileName);
+            handler = XjfConfig.instance.propertyHandlers.get(fileName);
         } else {
             XjfLogger.get().error(
                 String.format(
@@ -112,18 +104,10 @@ public class XjfConfig {
             );
         } else if (type.equals(XjfConst.XJF_CONFIG_TYPE_PROPERTIES)) {
             jsonHandlers.put(
-                fileName,
+                    fileName,
                     new XjfConfigJsonHandler(
-                        parseJson(XjfFile.readWholeFile(filePath))
+                            parseJson(XjfFile.readWholeFile(filePath))
                     )
-            );
-        } else {
-            XjfLogger.get().error(
-                String.format(
-                    "[Xjf System] Invalid config file type, fileName: %s, type: %s",
-                        fileName,
-                        type
-                )
             );
         }
     }
