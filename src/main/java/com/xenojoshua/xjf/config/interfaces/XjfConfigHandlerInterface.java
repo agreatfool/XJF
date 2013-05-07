@@ -1,5 +1,7 @@
 package com.xenojoshua.xjf.config.interfaces;
 
+import net.sf.json.JSONObject;
+
 public interface XjfConfigHandlerInterface {
 
     /**
@@ -29,4 +31,11 @@ public interface XjfConfigHandlerInterface {
      * @return resource
      */
     float loadFloat(String key);
+
+    /**
+     * Load json resource in config file.
+     * @param key
+     * @return resource
+     */
+    JSONObject loadJson(String key);
 }

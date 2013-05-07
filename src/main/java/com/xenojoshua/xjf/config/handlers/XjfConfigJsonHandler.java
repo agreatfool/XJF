@@ -42,6 +42,16 @@ public class XjfConfigJsonHandler implements XjfConfigHandlerInterface {
     }
 
     /**
+     * Load json resource in config file.
+     * @param key
+     * @return resource
+     */
+    @Override
+    public JSONObject loadJson(String key) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /**
      * Load float resource in config file.
      * @param key
      * @return resource

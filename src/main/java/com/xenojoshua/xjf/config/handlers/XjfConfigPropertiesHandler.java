@@ -1,6 +1,7 @@
 package com.xenojoshua.xjf.config.handlers;
 
 import com.xenojoshua.xjf.config.interfaces.XjfConfigHandlerInterface;
+import net.sf.json.JSONObject;
 
 import java.util.Properties;
 
@@ -29,6 +30,16 @@ public class XjfConfigPropertiesHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public String loadString(String key) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    /**
+     * Load json resource in config file.
+     * @param key
+     * @return resource
+     */
+    @Override
+    public JSONObject loadJson(String key) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
