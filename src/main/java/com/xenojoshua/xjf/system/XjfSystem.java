@@ -1,5 +1,6 @@
 package com.xenojoshua.xjf.system;
 
+import com.xenojoshua.xjf.config.XjfConfig;
 import com.xenojoshua.xjf.constant.XjfConst;
 import com.xenojoshua.xjf.log.XjfLogger;
 
@@ -16,6 +17,7 @@ public class XjfSystem {
 
         XjfSystem.initDirectories(jarRoot);
         XjfSystem.initLogger();
+        XjfSystem.initConfig();
 
         System.out.println("[Xjf System] initialized...");
     }
@@ -73,4 +75,12 @@ public class XjfSystem {
     private static void initLogger() {
         XjfLogger.init();
     }
+
+    /**
+     * Initialize XjfConfigFactory.
+     */
+    private static void initConfig() {
+        XjfConfig.init();
+    }
+
 }
