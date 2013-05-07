@@ -7,9 +7,7 @@ import org.apache.log4j.PropertyConfigurator;
 import java.io.File;
 
 public class XjfLoggerFactory {
-    private static Logger logger = null;
-
-    private static int CONF_RELOAD_INTERVAL = 100000; // 10s
+    private static Logger instance = null;
 
     /**
      * Initialize log4j logger.
@@ -21,8 +19,8 @@ public class XjfLoggerFactory {
             System.out.println("[Xjf System] Log4j config path invalid: " + log4jConfPath);
             System.exit(1);
         } else {
-            PropertyConfigurator.configureAndWatch(log4jConfPath, XjfLoggerFactory.CONF_RELOAD_INTERVAL);
-            XjfLoggerFactory.logger = Logger.getLogger(XjfConst.XJF_LOGGER_NAME);
+            PropertyConfigurator.configureAndWatch(log4jConfPath, XjfConst.XJF_LOGGER_CONF_RELOAD_INTERVAL);
+            XjfLoggerFactory.instance = Logger.getLogger(XjfConst.XJF_LOGGER_NAME);
             System.out.println("[Xjf System] Log4j initialized with config: " + log4jConfPath);
             log4jConf = null;
         }
@@ -30,9 +28,9 @@ public class XjfLoggerFactory {
 
     /**
      * Get instance of org.apache.log4j.Logger
-     * @return Logger logger
+     * @return logger
      */
     public static Logger get() {
-        return XjfLoggerFactory.logger;
+        return XjfLoggerFactory.instance;
     }
 }
