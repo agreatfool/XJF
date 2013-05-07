@@ -1,11 +1,12 @@
 package com.xenojoshua.xjf.system;
 
 import com.xenojoshua.xjf.constant.XjfConst;
-import com.xenojoshua.xjf.log.XjfLoggerFactory;
+import com.xenojoshua.xjf.log.XjfLogger;
 
 import java.io.File;
 
 public class XjfSystem {
+
     /**
      * Initialize XJF system.
      * @param jarRoot
@@ -67,9 +68,9 @@ public class XjfSystem {
     }
 
     /**
-     * Initialize XjfLoggerFactory.
+     * Initialize XjfLogger.
      */
     private static void initLogger() {
-        XjfLoggerFactory.init();
+        XjfLogger.init();
     }
 }

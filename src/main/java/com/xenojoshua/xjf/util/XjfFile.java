@@ -1,6 +1,6 @@
 package com.xenojoshua.xjf.util;
 
-import com.xenojoshua.xjf.log.XjfLoggerFactory;
+import com.xenojoshua.xjf.log.XjfLogger;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.io.File;
@@ -23,9 +23,9 @@ public class XjfFile {
             MappedByteBuffer mbb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
             fileContent = Charset.forName("UTF-8").decode(mbb).toString();
         } catch (FileNotFoundException fnfe) {
-            XjfLoggerFactory.get().error(String.format("[Xjf System] File not found: %s", filePath));
+            XjfLogger.get().error(String.format("[Xjf System] File not found: %s", filePath));
         } catch (IOException ioe) {
-            XjfLoggerFactory.get().error(
+            XjfLogger.get().error(
                 String.format(
                     "[Xjf System] Exception in reading file: %s\n%s",
                         filePath,
@@ -36,7 +36,7 @@ public class XjfFile {
             try {
                 stream.close();
             } catch (IOException ioe) {
-                XjfLoggerFactory.get().error(
+                XjfLogger.get().error(
                     String.format(
                         "[Xjf System] Exception in closing file: %s\n%s",
                             filePath,

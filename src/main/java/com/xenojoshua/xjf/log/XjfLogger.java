@@ -6,7 +6,8 @@ import org.apache.log4j.PropertyConfigurator;
 
 import java.io.File;
 
-public class XjfLoggerFactory {
+public class XjfLogger {
+
     private static Logger instance = null;
 
     /**
@@ -20,7 +21,7 @@ public class XjfLoggerFactory {
             System.exit(1);
         } else {
             PropertyConfigurator.configureAndWatch(log4jConfPath, XjfConst.XJF_LOGGER_CONF_RELOAD_INTERVAL);
-            XjfLoggerFactory.instance = Logger.getLogger(XjfConst.XJF_LOGGER_NAME);
+            XjfLogger.instance = Logger.getLogger(XjfConst.XJF_LOGGER_NAME);
             System.out.println("[Xjf System] Log4j initialized with config: " + log4jConfPath);
             log4jConf = null;
         }
@@ -28,9 +29,10 @@ public class XjfLoggerFactory {
 
     /**
      * Get instance of org.apache.log4j.Logger
-     * @return logger
+     * @return instance
      */
     public static Logger get() {
-        return XjfLoggerFactory.instance;
+        return XjfLogger.instance;
     }
+
 }
