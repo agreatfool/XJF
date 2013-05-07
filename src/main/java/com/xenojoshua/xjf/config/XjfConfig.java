@@ -59,18 +59,19 @@ public class XjfConfig {
      * @return handler
      */
     public static XjfConfigHandlerInterface getHandler(String fileName, String type) {
+        XjfConfig instance = XjfConfig.instance;
         XjfConfigHandlerInterface handler = null;
 
         if (type.equals(XjfConst.XJF_CONFIG_TYPE_JSON)) {
-            if (!XjfConfig.instance.jsonHandlers.containsKey(fileName)) {
-                XjfConfig.instance.loadConfigFile(fileName, type);
+            if (!instance.jsonHandlers.containsKey(fileName)) {
+                instance.loadConfigFile(fileName, type);
             }
-            handler = XjfConfig.instance.jsonHandlers.get(fileName);
+            handler = instance.jsonHandlers.get(fileName);
         } else if (type.equals(XjfConst.XJF_CONFIG_TYPE_PROPERTIES)) {
-            if (!XjfConfig.instance.propertyHandlers.containsKey(fileName)) {
-                XjfConfig.instance.loadConfigFile(fileName, type);
+            if (!instance.propertyHandlers.containsKey(fileName)) {
+                instance.loadConfigFile(fileName, type);
             }
-            handler = XjfConfig.instance.propertyHandlers.get(fileName);
+            handler = instance.propertyHandlers.get(fileName);
         } else {
             XjfLogger.get().error(
                 String.format(
@@ -85,7 +86,7 @@ public class XjfConfig {
     }
 
     //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
-    //-* RESOURCE LOADER FUNCTIONS
+    //-* RESOURCE LOAD FUNCTIONS
     //-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
     /**
      * Load config file content into String.
@@ -106,7 +107,7 @@ public class XjfConfig {
             jsonHandlers.put(
                     fileName,
                     new XjfConfigJsonHandler(
-                            parseJson(XjfFile.readWholeFile(filePath))
+                        parseJson(XjfFile.readWholeFile(filePath))
                     )
             );
         }
