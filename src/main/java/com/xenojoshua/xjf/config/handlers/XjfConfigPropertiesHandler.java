@@ -2,6 +2,7 @@ package com.xenojoshua.xjf.config.handlers;
 
 import com.xenojoshua.xjf.config.interfaces.XjfConfigHandlerInterface;
 import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 
 import java.util.Properties;
 
@@ -20,7 +21,7 @@ public class XjfConfigPropertiesHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public boolean hasKey(String key) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return resources.containsKey(key);
     }
 
     /**
@@ -30,7 +31,7 @@ public class XjfConfigPropertiesHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public String loadString(String key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return resources.getProperty(key);
     }
 
     /**
@@ -40,7 +41,7 @@ public class XjfConfigPropertiesHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public JSONObject loadJson(String key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return (JSONObject) JSONSerializer.toJSON(resources.getProperty(key));
     }
 
     /**
@@ -50,16 +51,16 @@ public class XjfConfigPropertiesHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public int loadInt(String key) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return Integer.parseInt(resources.getProperty(key));
     }
 
     /**
-     * Load float resource in config file.
+     * Load double resource in config file.
      * @param key
      * @return resource
      */
     @Override
-    public float loadFloat(String key) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public double loadFloat(String key) {
+        return Double.parseDouble(resources.getProperty(key));
     }
 }

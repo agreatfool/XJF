@@ -18,7 +18,7 @@ public class XjfConfigJsonHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public boolean hasKey(String key) {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return resources.containsKey(key);
     }
 
     /**
@@ -28,7 +28,7 @@ public class XjfConfigJsonHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public String loadString(String key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return resources.getString(key);
     }
 
     /**
@@ -38,7 +38,7 @@ public class XjfConfigJsonHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public int loadInt(String key) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+        return resources.getInt(key);
     }
 
     /**
@@ -48,16 +48,16 @@ public class XjfConfigJsonHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public JSONObject loadJson(String key) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return resources.getJSONObject(key);
     }
 
     /**
-     * Load float resource in config file.
+     * Load double resource in config file.
      * @param key
      * @return resource
      */
     @Override
-    public float loadFloat(String key) {
-        return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    public double loadFloat(String key) {
+        return resources.getDouble(key);
     }
 }
