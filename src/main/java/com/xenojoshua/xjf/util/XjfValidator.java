@@ -1,6 +1,6 @@
 package com.xenojoshua.xjf.util;
 
-import java.util.regex.Pattern;
+import org.apache.commons.lang.math.NumberUtils;
 
 public class XjfValidator {
 
@@ -27,16 +27,12 @@ public class XjfValidator {
     }
 
     /**
-     * Validate given string is a valid numeric string or not.<br/>
-     * This pattern of this function matches a number with optional '-' and decimal.<br/>
-     * <b>NOTE:</b><br/>
-     * Be careful with the RegEx mechanism, though, as it'll fail if your using non-latin (i.e. 0 to 9) digits.<br/>
-     * For example, arabic digits. This is because the "\d" part of the RegEx will only match [0-9] and effectively isn't internationally numerically aware.
+     * Validate given string is a valid numeric string or not.
      * @param number
      * @return valid
      */
     public static boolean isNumeric(String number) {
-        return number.matches("-?\\d+(\\.\\d+)?");
+        return NumberUtils.isNumber(number);
     }
 
 }
