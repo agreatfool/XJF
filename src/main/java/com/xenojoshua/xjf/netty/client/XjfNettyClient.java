@@ -8,6 +8,8 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
+import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
+import org.jboss.netty.handler.codec.frame.Delimiters;
 
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
@@ -18,20 +20,27 @@ public class XjfNettyClient {
     private ClientBootstrap bootstrap;
     private Channel channel;
 
-    private final String host;
-    private final int port;
+    private String host;
+    private int port;
+    private int maxMsgSize = 8192; // 8k
 
     private boolean connecting = false;
 
-    private LinkedList<String> messages;
+    private LinkedList<String> messages = new LinkedList<String>();
 
     public XjfNettyClient(String host, int port) {
         this.host = host;
         this.port = port;
-        this.messages = new LinkedList<String>();
+    }
+
+    public XjfNettyClient(String host, int port, int maxMsgSize) {
+        this.host = host;
+        this.port = port;
+        this.maxMsgSize = maxMsgSize;
     }
 
     public void run() {
+
         bootstrap = new ClientBootstrap(
             new NioClientSocketChannelFactory(
                 Executors.newCachedThreadPool(),
@@ -42,6 +51,9 @@ public class XjfNettyClient {
         bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
             public ChannelPipeline getPipeline() throws Exception {
                 ChannelPipeline pipeline = Channels.pipeline();
+                pipeline.addLast("framer", new DelimiterBasedFrameDecoder(
+                    maxMsgSize, Delimiters.lineDelimiter()
+                ));
                 pipeline.addLast("handler", new XjfNettyClientHandler());
                 return pipeline;
             }
@@ -54,7 +66,7 @@ public class XjfNettyClient {
     }
 
     private void connect() {
-        XjfLogger.get().debug("[xjf-netty-client] Connect to: " + host + ":" + port);
+        XjfLogger.get().debug(String.format("[xjf-netty-client] Connect to > %s:%s", host, port));
         ChannelFuture future = bootstrap.connect(new InetSocketAddress(host, port));
         connecting = true;
         future.addListener(new ChannelFutureListener() {
@@ -68,7 +80,7 @@ public class XjfNettyClient {
                     );
                     bootstrap.releaseExternalResources();
                 } else {
-                    XjfLogger.get().debug("[xjf-netty-client] Connected to server!");
+                    XjfLogger.get().debug(String.format("[xjf-netty-client] Connected to > %s:%s", host, port));
                     channel = channelFuture.getChannel();
                     send();
                 }
@@ -81,6 +93,7 @@ public class XjfNettyClient {
     }
 
     public void send() {
+
         if (messages.isEmpty()) {
             XjfLogger.get().debug("[xjf-netty-client] send(): Message queue is empty, skip!");
             return;
@@ -93,9 +106,12 @@ public class XjfNettyClient {
             return;
         }
 
-        String msg = messages.pop() + "\n";
-        ChannelBuffer buffer = ChannelBuffers.buffer(msg.length());
-        buffer.writeBytes(msg.getBytes());
+        // loop and write all messages
+        ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
+        while (!messages.isEmpty()) {
+            String msg = messages.removeLast() + "\n"; // add line delimiter
+            buffer.writeBytes(msg.getBytes());
+        }
 
         ChannelFuture future = channel.write(buffer);
         future.addListener(new ChannelFutureListener() {
@@ -103,17 +119,18 @@ public class XjfNettyClient {
             public void operationComplete(ChannelFuture channelFuture) throws Exception {
                 if (!channelFuture.isSuccess()) {
                     XjfLogger.get().error(
-                            "[xjf-netty-client] Msg sent failed: " +
+                            "[xjf-netty-client] Send message failed: " +
                                     ExceptionUtils.getStackTrace(channelFuture.getCause())
                     );
                     channelFuture.getChannel().close();
                     bootstrap.releaseExternalResources();
                 } else {
-                    XjfLogger.get().debug("[xjf-netty-client] Msg sent completed!");
+                    XjfLogger.get().debug("[xjf-netty-client] Send message completed!");
                 }
             }
         });
 
         send();
+
     }
 }

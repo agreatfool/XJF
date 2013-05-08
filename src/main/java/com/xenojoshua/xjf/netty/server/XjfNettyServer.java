@@ -15,10 +15,24 @@ import java.util.concurrent.Executors;
 
 public class XjfNettyServer {
 
-    private static final int port = 8080;
+    private String host;
+    private int port;
+    private int maxMsgSize = 8192; // 8k
+
+    public XjfNettyServer(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
+
+    public XjfNettyServer(String host, int port, int maxMsgSize) {
+        this.host = host;
+        this.port = port;
+        this.maxMsgSize = maxMsgSize;
+    }
 
     public void run() {
-        XjfLogger.get().debug("[xjf-netty-server] start...");
+
+        XjfLogger.get().debug("[xjf-netty-server] starting...");
 
         ServerBootstrap bootstrap = new ServerBootstrap(
             new NioServerSocketChannelFactory(
@@ -31,7 +45,7 @@ public class XjfNettyServer {
             public ChannelPipeline getPipeline() throws Exception {
                 ChannelPipeline pipeline = Channels.pipeline();
                 pipeline.addLast("framer", new DelimiterBasedFrameDecoder(
-                    8192, Delimiters.lineDelimiter() // MAX size 8K(bytes)
+                    maxMsgSize, Delimiters.lineDelimiter()
                 ));
 
 //                pipeline.addLast("decoder", new StringDecoder());
@@ -42,11 +56,11 @@ public class XjfNettyServer {
             }
         });
 
-        // Bind and start to accept incoming connections.
-        bootstrap.bind(
-            new InetSocketAddress(XjfNettyServer.port)
-        );
+        bootstrap.setOption("tcpNoDelay", true);
+        bootstrap.setOption("keepAlive", true);
 
-        XjfLogger.get().debug("[xjf-netty-server] started...");
+        bootstrap.bind(new InetSocketAddress(host, port));
+
+        XjfLogger.get().debug(String.format("[xjf-netty-server] listening... > %s:%s", host, port));
     }
 }

@@ -17,7 +17,7 @@ public class XjfNettyClientHandler extends SimpleChannelUpstreamHandler {
         int bytes = buffer.readableBytes();
         transferredBytes.addAndGet(bytes);
 
-        e.getChannel().write(e.getMessage());
+//        e.getChannel().write(e.getMessage());
 
         XjfLogger.get().debug("[xjf-netty-client] Message received, size: " + bytes + " , message: " + e.getMessage());
         XjfLogger.get().debug("[xjf-netty-client] Total received message size: " + transferredBytes.get());

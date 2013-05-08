@@ -1,5 +1,6 @@
 package com.xenojoshua.xjf.netty.server.handler;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.xenojoshua.xjf.log.XjfLogger;
@@ -17,7 +18,7 @@ public class XjfNettyServerHandler extends SimpleChannelUpstreamHandler {
         int bytes = buffer.readableBytes();
         transferredBytes.addAndGet(bytes);
 
-        String message = buffer.toString();
+        String message = buffer.toString(Charset.forName("UTF-8"));
 
         // e.getChannel().write(e.getMessage()); // do not echo message here, otherwise client & server will echo without stopping
 
