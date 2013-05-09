@@ -1,8 +1,10 @@
 package com.xenojoshua.xjf.util;
 
 import com.xenojoshua.xjf.log.XjfLogger;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -32,20 +34,7 @@ public class XjfUtil {
      * @return digest
      */
     public static String md5(String origin) {
-        String digest = null;
-
-        try {
-            digest = MessageDigest.getInstance("MD5").digest(origin.getBytes()).toString();
-        } catch (NoSuchAlgorithmException nsae) {
-            XjfLogger.get().error(
-                String.format(
-                    "[XjfUtil.md5] NoSuchAlgorithmException: %s",
-                        ExceptionUtils.getStackTrace(nsae)
-                )
-            );
-        }
-
-        return digest;
+        return DigestUtils.md5Hex(origin);
     }
 
 }
