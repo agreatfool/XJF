@@ -10,7 +10,9 @@
 * log4j会查找logs文件夹，并向其中写入日志内容
 	* log4j的配置文件中，日志文件的配置必须使用${WORKDIR}这个变量
 	* log4j.appender.DLD.File = ${WORKDIR}/logs/debug.log
-	
+
+### Netty
+* Netty的消息配置文件命名为`netty-msg.json`，固定值
 
 ## Dependencies
 * `io.netty` `netty` `3.6.3.Final`
