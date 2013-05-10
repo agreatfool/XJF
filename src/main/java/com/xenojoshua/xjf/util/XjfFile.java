@@ -13,6 +13,11 @@ import java.nio.charset.Charset;
 
 public class XjfFile {
 
+    /**
+     * Read whole content of a file.
+     * @param filePath
+     * @return fileContent
+     */
     public static String readWholeFile(String filePath) {
         String fileContent = null;
         FileInputStream stream = null;
@@ -34,13 +39,14 @@ public class XjfFile {
             );
         } finally {
             try {
-                stream.close();
+                if (stream != null) {
+                    stream.close();
+                }
             } catch (IOException ioe) {
                 XjfLogger.get().error(
                     String.format(
                         "[Xjf System] Exception in closing file: %s\n%s",
-                            filePath,
-                            ExceptionUtils.getStackTrace(ioe)
+                            filePath, ExceptionUtils.getStackTrace(ioe)
                     )
                 );
             }
