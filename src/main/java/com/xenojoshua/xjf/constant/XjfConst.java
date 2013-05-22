@@ -6,6 +6,7 @@ public class XjfConst {
     public static String XJF_ROOT = "";
     public static String XJF_LOGS_ROOT = "";
     public static String XJF_CONF_ROOT = "";
+    public static String XJF_TPL_ROOT = "";
 
     // CONFIG
     public static final String XJF_CONFIG_TYPE_JSON = "json";
