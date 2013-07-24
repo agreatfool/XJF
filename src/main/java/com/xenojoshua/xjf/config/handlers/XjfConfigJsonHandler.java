@@ -1,11 +1,12 @@
 package com.xenojoshua.xjf.config.handlers;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xenojoshua.xjf.config.interfaces.XjfConfigHandlerInterface;
-import net.sf.json.JSONObject;
 
 public class XjfConfigJsonHandler implements XjfConfigHandlerInterface {
 
     private JSONObject resources;
+    private String key;
 
     public XjfConfigJsonHandler(JSONObject resources) {
         this.resources = resources;
@@ -38,7 +39,7 @@ public class XjfConfigJsonHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public int loadInt(String key) {
-        return resources.getInt(key);
+        return resources.getIntValue(key);
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.xenojoshua.xjf.config.interfaces;
 
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 public interface XjfConfigHandlerInterface {
 
@@ -34,6 +34,7 @@ public interface XjfConfigHandlerInterface {
 
     /**
      * Load json resource in config file.
+     *
      * @param key
      * @return resource
      */

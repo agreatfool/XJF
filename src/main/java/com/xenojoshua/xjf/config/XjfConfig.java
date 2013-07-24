@@ -1,13 +1,13 @@
 package com.xenojoshua.xjf.config;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSON;
 import com.xenojoshua.xjf.config.handlers.XjfConfigJsonHandler;
 import com.xenojoshua.xjf.config.handlers.XjfConfigPropertiesHandler;
 import com.xenojoshua.xjf.config.interfaces.XjfConfigHandlerInterface;
 import com.xenojoshua.xjf.constant.XjfConst;
 import com.xenojoshua.xjf.log.XjfLogger;
 import com.xenojoshua.xjf.util.XjfFile;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.io.IOException;
@@ -141,6 +141,6 @@ public class XjfConfig {
      * @return json
      */
     private JSONObject parseJson(String configContent) {
-        return (JSONObject) JSONSerializer.toJSON(configContent);
+        return JSON.parseObject(configContent);
     }
 }

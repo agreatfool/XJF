@@ -29,7 +29,7 @@ public class XjfLogger {
 
     /**
      * Get instance of org.apache.log4j.Logger
-     * @return instance
+     * @return Logger instance
      */
     public static Logger get() {
         return XjfLogger.instance;
