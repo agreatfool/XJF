@@ -1,32 +1,29 @@
 package com.xenojoshua.xjf.netty.client;
 
+import com.google.protobuf.GeneratedMessage;
 import com.xenojoshua.xjf.log.XjfLogger;
-import com.xenojoshua.xjf.netty.client.handler.XjfNettyClientHandler;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.jboss.netty.bootstrap.ClientBootstrap;
-import org.jboss.netty.buffer.ChannelBuffer;
-import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
-import org.jboss.netty.handler.codec.frame.DelimiterBasedFrameDecoder;
-import org.jboss.netty.handler.codec.frame.Delimiters;
 
 import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.concurrent.Executors;
 
-public class XjfNettyClient {
+public abstract class XjfNettyClient {
 
-    private ClientBootstrap bootstrap;
-    private Channel channel;
+    protected ClientBootstrap bootstrap;
+    protected Channel channel;
 
-    private String host;
-    private int port;
-    private int maxMsgSize = 8192; // 8k
+    protected String host;
+    protected int port;
+    protected int maxMsgSize = 8192; // 8k
 
-    private boolean connecting = false;
+    protected boolean connecting = false;
 
-    private LinkedList<String> messages = new LinkedList<String>();
+    protected LinkedList<GeneratedMessage> messages = new LinkedList<GeneratedMessage>();
 
     public XjfNettyClient(String host, int port) {
         this.host = host;
@@ -40,7 +37,6 @@ public class XjfNettyClient {
     }
 
     public void run() {
-
         bootstrap = new ClientBootstrap(
             new NioClientSocketChannelFactory(
                 Executors.newCachedThreadPool(),
@@ -48,16 +44,7 @@ public class XjfNettyClient {
             )
         );
 
-        bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
-            public ChannelPipeline getPipeline() throws Exception {
-                ChannelPipeline pipeline = Channels.pipeline();
-                pipeline.addLast("framer", new DelimiterBasedFrameDecoder(
-                    maxMsgSize, Delimiters.lineDelimiter()
-                ));
-                pipeline.addLast("handler", new XjfNettyClientHandler());
-                return pipeline;
-            }
-        });
+        bootstrap.setPipelineFactory(buildPiplineFactory());
 
         bootstrap.setOption("tcpNoDelay", true);
         bootstrap.setOption("keepAlive", true);
@@ -88,8 +75,8 @@ public class XjfNettyClient {
         });
     }
 
-    public void send(String msg) {
-        messages.push(msg);
+    public void send(GeneratedMessage message) {
+        messages.push(message);
     }
 
     public void send() {
@@ -106,14 +93,7 @@ public class XjfNettyClient {
             return;
         }
 
-        // loop and write all messages
-        ChannelBuffer buffer = ChannelBuffers.dynamicBuffer();
-        while (!messages.isEmpty()) {
-            String msg = messages.removeLast() + "\n"; // add line delimiter
-            buffer.writeBytes(msg.getBytes());
-        }
-
-        ChannelFuture future = channel.write(buffer);
+        ChannelFuture future = channel.write(messages.removeLast());
         future.addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture channelFuture) throws Exception {
@@ -133,4 +113,6 @@ public class XjfNettyClient {
         send();
 
     }
+
+    abstract ChannelPipelineFactory buildPiplineFactory();
 }

@@ -1,9 +1,8 @@
 package com.xenojoshua.xjf.config.handlers;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.xenojoshua.xjf.config.interfaces.XjfConfigHandlerInterface;
-import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
 
 import java.util.Properties;
 
@@ -43,7 +42,7 @@ public class XjfConfigPropertiesHandler implements XjfConfigHandlerInterface {
      */
     @Override
     public JSONObject loadJson(String key) {
-        return (JSONObject) JSONSerializer.toJSON(resources.getProperty(key));
+        return JSON.parseObject(resources.getProperty(key));
     }
 
     /**

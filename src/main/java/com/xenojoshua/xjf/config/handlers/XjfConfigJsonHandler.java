@@ -6,7 +6,6 @@ import com.xenojoshua.xjf.config.interfaces.XjfConfigHandlerInterface;
 public class XjfConfigJsonHandler implements XjfConfigHandlerInterface {
 
     private JSONObject resources;
-    private String key;
 
     public XjfConfigJsonHandler(JSONObject resources) {
         this.resources = resources;
